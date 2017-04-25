@@ -15,6 +15,11 @@ module.exports = function () {
       return callback(null, image);
     }
 
+    // pass through if we are dealing with gif image
+    if (image._format === 'gif') {
+      return callback(null, image);
+    }
+
     // let this pass through if we are requesting the metadata as JSON
     if (image.modifiers.action === 'json'){
       image.log.log('resize: json metadata call');

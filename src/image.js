@@ -55,7 +55,7 @@ function Image(request){
 }
 
 Image.validInputFormats  = ['jpeg', 'jpg', 'png', 'webp', 'tiff', 'tif', 'gif'];
-Image.validOutputFormats = ['jpeg', 'png', 'webp'];
+Image.validOutputFormats = ['jpeg', 'png', 'webp', 'gif'];
 
 // Determine the name and format of the requested image
 Image.prototype.parseImage = function(request){
