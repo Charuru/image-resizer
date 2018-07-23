@@ -8,8 +8,11 @@ vars = {
 
   NODE_ENV: 'development',
   PORT: 3001,
-  DEFAULT_SOURCE: 's3',
-  EXCLUDE_SOURCES: null, // add comma delimited list
+
+  // Sources
+  DEFAULT_SOURCE: 'generic-web',
+  GENERIC_WEB_URL:"https://myaccount.blob.core.windows.net",
+  EXCLUDE_SOURCES: null, // add comma delimited list  
 
   // Restrict to named modifiers strings only
   NAMED_MODIFIERS_ONLY: false,

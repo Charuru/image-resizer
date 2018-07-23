@@ -1,0 +1,4 @@
+yarn install
+
+node server.js
+DEFAULT_SOURCE="generic-web" GENERIC_WEB_URL="https://myaccount.blob.core.windows.net" NODE_ENV="development" node server.js
