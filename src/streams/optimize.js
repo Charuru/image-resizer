@@ -1,13 +1,13 @@
 'use strict';
 
-var sharp  = require('sharp');
-var env    = require('../config/environment_vars');
-var map    = require('map-stream');
+var sharp = require('sharp');
+var env = require('../config/environment_vars');
+var map = require('map-stream');
 
 
 module.exports = function () {
 
-  return map( function (image, callback) {
+  return map(function (image, callback) {
 
     // pass through if there is an error
     if (image.isError()) {
@@ -20,7 +20,7 @@ module.exports = function () {
     }
 
     // let this pass through if we are requesting the metadata as JSON
-    if (image.modifiers.action === 'json'){
+    if (image.modifiers.action === 'json') {
       image.log.log('optimize: json metadata call');
       return callback(null, image);
     }
@@ -29,14 +29,26 @@ module.exports = function () {
 
     var r = sharp(image.contents);
 
+    var progressive = false;
     if (env.IMAGE_PROGRESSIVE) {
-      r.progressive();
+      progressive = true;
     }
 
     // set the output quality
+    // if (image.modifiers.quality < 100) {
+    //   r.quality(image.modifiers.quality);
+    // }
+
+    var quality = 100;
     if (image.modifiers.quality < 100) {
-      r.quality(image.modifiers.quality);
+      quality = image.modifiers.quality
     }
+
+    r.jpeg({
+      quality: quality,
+      progressive: progressive,
+      force: false
+    })
 
     // if a specific output format is specified, set it
     if (image.outputFormat) {
@@ -44,7 +56,7 @@ module.exports = function () {
     }
 
     // write out the optimised image to buffer and pass it on
-    r.toBuffer( function (err, buffer) {
+    r.toBuffer(function (err, buffer) {
       if (err) {
         image.log.error('optimize error', err);
         image.error = new Error(err);
