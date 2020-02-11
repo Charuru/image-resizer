@@ -11,7 +11,7 @@ vars = {
 
   // Sources
   DEFAULT_SOURCE: 'generic-web',
-  GENERIC_WEB_URL:"https://myaccount.blob.core.windows.net",
+  GENERIC_WEB_URL: "https://example.cdn",
   EXCLUDE_SOURCES: null, // add comma delimited list  
 
   // Restrict to named modifiers strings only
