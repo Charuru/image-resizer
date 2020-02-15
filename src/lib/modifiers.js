@@ -13,6 +13,7 @@ Sample modifier strings, separated by a dash
 
 Supported modifiers are:
 
+  - type:         eg. tjpeg
   - height:       eg. h500
   - width:        eg. w200
   - square:       eg. s50
@@ -90,17 +91,24 @@ modifierMap = [
     type: 'integer'
   },
   {
+    key: 't',
+    desc: 'type',
+    type: 'string',
+    values: ['none', 'jpeg', 'webp', 'webm'], // none, jpeg, webp, webm
+    default: 'none'
+  },
+  {
     key: 'g',
     desc: 'gravity',
     type: 'string',
-    values: ['c','n','s','e','w','ne','nw','se','sw'],
+    values: ['c', 'n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'],
     default: 'c'
   },
   {
     key: 'c',
     desc: 'crop',
     type: 'string',
-    values: ['fit','fill','cut','scale','pad'],
+    values: ['fit','fill','cut','scale','pad', 'allfill'],
     default: 'fit'
   },
   {
@@ -193,6 +201,10 @@ function parseModifiers(mods, modArr) {
         mods.action = 'square';
         mods.height = string.sanitize(value);
         mods.width = string.sanitize(value);
+        mods.hasModStr = true;
+        break;
+      case 'type':
+        mods.forceType = string.sanitize(value) || 'none';
         mods.hasModStr = true;
         break;
       case 'gravity':

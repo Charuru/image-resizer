@@ -16,7 +16,7 @@ module.exports = function () {
     }
 
     // pass through if we are dealing with gif image
-    if (image._format === 'gif') {
+    if (image._format === 'gif' && !image.modifiers.forceType || image.modifiers.forceType == 'none') {
       return callback(null, image);
     }
 
@@ -47,6 +47,10 @@ module.exports = function () {
     };
 
     var r = sharp(image.contents);
+
+    if (image.modifiers.forceType && image.modifiers.forceType !== 'none') {
+      r.toFormat(image.modifiers.forceType)
+    }
 
     // if allowed auto rotate images, very helpful for photos off of an iphone
     // which are landscape by default and the metadata tells them what to show.
@@ -129,6 +133,10 @@ module.exports = function () {
                 height: d.crop.height
               });
               break;
+            case 'fullcover':
+              // enlarge the image if you have to so that the dimensions are all filled while maintaing aspect ratio. Then cut off the extra.
+              r.resize(image.modifiers.width, image.modifiers.height, { withoutEnlargement: false, fit: 'cover', background: { r: 0, g: 0, b: 0, alpha: 0 } });
+              break;
             case 'cut':
               wd = image.modifiers.width || image.modifiers.height;
               ht = image.modifiers.height || image.modifiers.width;
@@ -149,13 +157,12 @@ module.exports = function () {
               break;
             case 'scale':
               r.resize(image.modifiers.width, image.modifiers.height, { withoutEnlargement: true });
-              r.ignoreAspectRatio();
               break;
             case 'pad':
               r.resize(
                 image.modifiers.width,
                 image.modifiers.height
-                , { withoutEnlargement: true }).background(env.IMAGE_PADDING_COLOR || 'white').embed();
+                , { withoutEnlargement: false, fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } });
           }
 
           r.toBuffer(resizeResponse);
