@@ -58,13 +58,13 @@ External.prototype._read = function () {
       return this.push(null);
     }
   } else {
-    this.prefix = "https://tydai.s3.us-east-2.stackpathstorage.com"
+    this.prefix = "https://anonkun.s3.amazonaws.com" // use this slower non-cdn to save on edge costs.
 
     if (this.image.path.startsWith('iocf-')) { // stands for "is original cloudfront"
       url = "https://ddx5i92cqts4o.cloudfront.net" + '/' + this.image.path.slice(5);
     }
-    else if (this.image.path.startsWith('isss-')) { // stands for "is current stackstorage"
-      url = "https://tydai.s3.us-east-2.stackpathstorage.com" + '/' + this.image.path.slice(5);
+    else if (this.image.path.startsWith('idos-')) { // stands for "is digital ocean spaces"
+      url = "https://cdnfictionlive.nyc3.digitaloceanspaces.com" + '/' + this.image.path.slice(5);
     }
     else {
       url = this.prefix + '/' + this.image.path;
